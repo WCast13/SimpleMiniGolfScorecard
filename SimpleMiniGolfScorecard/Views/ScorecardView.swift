@@ -191,22 +191,19 @@ struct PlayerScoreCard: View {
         .onChange(of: hole) { _, _ in
             loadScore()
         }
-        .overlay {
-            if showingScorePicker {
-                ScorePickerView(
-                    selectedScore: $strokes,
-                    onSelect: { score in
-                        strokes = score
-                        updateScore()
-                    },
-                    onDismiss: {
-                        withAnimation {
-                            showingScorePicker = false
-                        }
-                    }
-                )
-                .zIndex(1000)
-            }
+        .sheet(isPresented: $showingScorePicker) {
+            ScorePickerView(
+                selectedScore: $strokes,
+                onSelect: { score in
+                    strokes = score
+                    updateScore()
+                },
+                onDismiss: {
+                    showingScorePicker = false
+                }
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
     }
 
