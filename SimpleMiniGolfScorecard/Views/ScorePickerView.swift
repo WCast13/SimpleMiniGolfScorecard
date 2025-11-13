@@ -19,44 +19,34 @@ struct ScorePickerView: View {
                 GridItem(.flexible())
             ], spacing: 16) {
                 ForEach(scores, id: \.self) { score in
-                    Button {
-                        selectedScore = score
+                    
+                    Button("\(score)") {
                         onSelect(score)
                         onDismiss()
-                    } label: {
-                        Text("\(score)")
-                            .font(.system(size: 36, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 90, height: 90)
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(score == selectedScore ? Color.blue.opacity(0.6) : Color.white.opacity(0.15))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color.white.opacity(0.4), lineWidth: 1.5)
-                            )
                     }
+                    .font(Font.system(size: 36, weight: .bold))
+                    .frame(width: 90, height: 90)
                     .buttonStyle(.plain)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(score == selectedScore ? Color.green.opacity(0.6) : Color.black.opacity(0.15))
+                    )   
                 }
             }
             .padding(.vertical)
 
-            Button {
+            Button("Cancel") {
                 onDismiss()
-            } label: {
-                Text("Cancel")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.white.opacity(0.2))
-                    .cornerRadius(12)
             }
+            .font(.headline)
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.red.opacity(0.75))
+            .cornerRadius(12)
         }
         .padding(30)
-        .background(.ultraThinMaterial)
-        .presentationBackground(.clear)
+        .glassEffect()
     }
 }
 
