@@ -40,13 +40,28 @@ struct SeedData {
     }
 
     static func shouldSeedData(modelContext: ModelContext) -> Bool {
-        let descriptor = FetchDescriptor<Course>()
+        // Check if Popstroke courses already exist
+        var descriptor = FetchDescriptor<Course>(
+            predicate: #Predicate<Course> { course in
+                course.name.contains("Popstroke Delray Beach")
+            }
+        )
+
         do {
-            let courses = try modelContext.fetch(descriptor)
-            return courses.isEmpty
+            let popstrokeCourses = try modelContext.fetch(descriptor)
+            // Only seed if no Popstroke courses exist
+            return popstrokeCourses.isEmpty
         } catch {
-            print("Failed to check for existing courses: \(error)")
-            return false
+            print("Failed to check for existing Popstroke courses: \(error)")
+            // If there's an error, check if ANY courses exist
+            let allCoursesDescriptor = FetchDescriptor<Course>()
+            do {
+                let allCourses = try modelContext.fetch(allCoursesDescriptor)
+                return allCourses.isEmpty
+            } catch {
+                print("Failed to check for any courses: \(error)")
+                return false
+            }
         }
     }
 }
