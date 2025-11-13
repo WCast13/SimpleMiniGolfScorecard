@@ -1,5 +1,7 @@
 import SwiftUI
 import MapKit
+import CoreLocation
+import Combine
 
 struct LocationPickerView: View {
     @Environment(\.dismiss) private var dismiss
@@ -11,6 +13,7 @@ struct LocationPickerView: View {
     @State private var searchResults: [MKMapItem] = []
     @State private var selectedLocation: MKMapItem?
     @State private var cameraPosition: MapCameraPosition
+    @StateObject private var locationManager = LocationManager()
 
     init(locationName: Binding<String>, latitude: Binding<Double?>, longitude: Binding<Double?>) {
         self._locationName = locationName
@@ -25,7 +28,7 @@ struct LocationPickerView: View {
                 span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             )))
         } else {
-            _cameraPosition = State(initialValue: .automatic)
+            _cameraPosition = State(initialValue: .userLocation(fallback: .automatic))
         }
     }
 
@@ -37,8 +40,15 @@ struct LocationPickerView: View {
                         Marker(selectedLocation.name ?? "Selected Location", coordinate: selectedLocation.location.coordinate)
                             .tint(.red)
                     }
+                    UserAnnotation()
+                }
+                .mapControls {
+                    MapUserLocationButton()
                 }
                 .frame(height: 300)
+                .onAppear {
+                    locationManager.requestLocation()
+                }
 
                 List {
                     Section {
@@ -105,5 +115,49 @@ struct LocationPickerView: View {
             center: item.location.coordinate,
             span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         ))
+    }
+}
+
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private let manager = CLLocationManager()
+    @Published var location: CLLocation?
+    @Published var authorizationStatus: CLAuthorizationStatus?
+
+    override init() {
+        super.init()
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+    }
+
+    func requestLocation() {
+        let status = manager.authorizationStatus
+        authorizationStatus = status
+
+        switch status {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways:
+            manager.requestLocation()
+        case .denied, .restricted:
+            // Location access denied
+            break
+        @unknown default:
+            break
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        location = locations.first
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location error: \(error.localizedDescription)")
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        authorizationStatus = manager.authorizationStatus
+        if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways {
+            manager.requestLocation()
+        }
     }
 }
