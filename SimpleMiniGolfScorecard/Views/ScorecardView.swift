@@ -11,35 +11,39 @@ struct ScorecardView: View {
     var body: some View {
         VStack(spacing: 0) {
             if let course = game.course, let players = game.players {
-                HoleNavigationBar(
-                    currentHole: $currentHole,
-                    totalHoles: course.numberOfHoles,
-                    onComplete: {
-                        game.isComplete = true
-                        showingResults = true
-                    }
-                )
-
-                ScrollView {
-                    VStack(spacing: 20) {
-                        HoleInfoCard(
-                            holeNumber: currentHole,
-                            par: course.parPerHole[currentHole - 1]
-                        )
-
-                        VStack(spacing: 12) {
-                            ForEach(players) { player in
-                                PlayerScoreCard(
-                                    player: player,
-                                    game: game,
-                                    hole: currentHole,
-                                    modelContext: modelContext
-                                )
-                            }
+                if !showingScorecardTable {
+                    HoleNavigationBar(
+                        currentHole: $currentHole,
+                        totalHoles: course.numberOfHoles,
+                        onComplete: {
+                            game.isComplete = true
+                            showingResults = true
                         }
-                        .padding(.horizontal)
+                    )
+
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            HoleInfoCard(
+                                holeNumber: currentHole,
+                                par: course.parPerHole[currentHole - 1]
+                            )
+
+                            VStack(spacing: 12) {
+                                ForEach(players) { player in
+                                    PlayerScoreCard(
+                                        player: player,
+                                        game: game,
+                                        hole: currentHole,
+                                        modelContext: modelContext
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .padding(.vertical)
                     }
-                    .padding(.vertical)
+                } else {
+                    ScorecardTableView(game: game)
                 }
             }
         }
@@ -48,28 +52,19 @@ struct ScorecardView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    showingScorecardTable = true
+                    withAnimation {
+                        showingScorecardTable.toggle()
+                    }
                 } label: {
-                    Label("View Scorecard", systemImage: "tablecells")
+                    Label(
+                        showingScorecardTable ? "Score Entry" : "View Scorecard",
+                        systemImage: showingScorecardTable ? "pencil" : "tablecells"
+                    )
                 }
             }
         }
         .sheet(isPresented: $showingResults) {
             GameResultsView(game: game)
-        }
-        .sheet(isPresented: $showingScorecardTable) {
-            NavigationStack {
-                ScorecardTableView(game: game)
-                    .navigationTitle("Full Scorecard")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") {
-                                showingScorecardTable = false
-                            }
-                        }
-                    }
-            }
         }
     }
 }
@@ -149,12 +144,20 @@ struct PlayerScoreCard: View {
     let modelContext: ModelContext
 
     @State private var strokes: Int = 0
+    @State private var showingScorePicker = false
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text(player.name)
-                    .font(.headline)
+                HStack(spacing: 6) {
+                    if let ballColor = player.ballColor {
+                        Circle()
+                            .fill(ballColor.color)
+                            .frame(width: 16, height: 16)
+                    }
+                    Text(player.name)
+                        .font(.headline)
+                }
                 Text("Total: \(game.totalScore(for: player))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -162,33 +165,21 @@ struct PlayerScoreCard: View {
 
             Spacer()
 
-            HStack(spacing: 16) {
-                Button {
-                    if strokes > 0 {
-                        strokes -= 1
-                        updateScore()
-                    }
-                } label: {
-                    Image(systemName: "minus.circle.fill")
-                        .font(.title)
-                        .foregroundStyle(strokes > 0 ? .red : .gray)
+            Button {
+                showingScorePicker = true
+            } label: {
+                VStack(spacing: 4) {
+                    Text("\(strokes)")
+                        .font(.system(size: 36, weight: .bold))
+                    Text("strokes")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
-                .disabled(strokes == 0)
-
-                Text("\(strokes)")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .frame(minWidth: 40)
-
-                Button {
-                    strokes += 1
-                    updateScore()
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title)
-                        .foregroundStyle(.green)
-                }
+                .frame(width: 100, height: 80)
+                .background(Color(.secondarySystemBackground))
+                .cornerRadius(12)
             }
+            .buttonStyle(.plain)
         }
         .padding()
         .background(Color(.systemBackground))
@@ -199,6 +190,23 @@ struct PlayerScoreCard: View {
         }
         .onChange(of: hole) { _, _ in
             loadScore()
+        }
+        .overlay {
+            if showingScorePicker {
+                ScorePickerView(
+                    selectedScore: $strokes,
+                    onSelect: { score in
+                        strokes = score
+                        updateScore()
+                    },
+                    onDismiss: {
+                        withAnimation {
+                            showingScorePicker = false
+                        }
+                    }
+                )
+                .zIndex(1000)
+            }
         }
     }
 
