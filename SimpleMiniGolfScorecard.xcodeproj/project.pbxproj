@@ -10,22 +10,9 @@
 		E1CA46B42EC63C5A00D2B7FC /* SimpleMiniGolfScorecard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMiniGolfScorecard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E1CA47282EC7AAFE00D2B7FC /* Exceptions for "SimpleMiniGolfScorecard" folder in "SimpleMiniGolfScorecard" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = E1CA46B32EC63C5A00D2B7FC /* SimpleMiniGolfScorecard */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E1CA46B62EC63C5A00D2B7FC /* SimpleMiniGolfScorecard */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				E1CA47282EC7AAFE00D2B7FC /* Exceptions for "SimpleMiniGolfScorecard" folder in "SimpleMiniGolfScorecard" target */,
-			);
 			path = SimpleMiniGolfScorecard;
 			sourceTree = "<group>";
 		};
