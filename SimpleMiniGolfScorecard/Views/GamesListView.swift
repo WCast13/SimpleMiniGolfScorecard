@@ -55,13 +55,6 @@ struct GamesListView: View {
 struct GameListRow: View {
     let game: Game
 
-    var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(game.course?.name ?? "Unknown Course")
@@ -83,7 +76,7 @@ struct GameListRow: View {
                 }
             }
 
-            Text(dateFormatter.string(from: game.date))
+            Text(DateFormatterHelper.formatGameDate(game.date))
                 .font(.caption2)
                 .foregroundStyle(.secondary)
         }

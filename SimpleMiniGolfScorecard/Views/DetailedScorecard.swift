@@ -57,7 +57,7 @@ struct DetailedScorecard: View {
                                     .font(.caption)
                                     .frame(width: 50)
                                     .padding(.vertical, 8)
-                                    .background(scoreColor(score: score.strokes, par: course.parPerHole[hole - 1]))
+                                    .background(ScoreColorHelper.color(score: score.strokes, par: course.parPerHole[hole - 1]))
                             } else {
                                 Text("-")
                                     .font(.caption)
@@ -77,14 +77,5 @@ struct DetailedScorecard: View {
             }
         }
         .padding(.horizontal)
-    }
-
-    private func scoreColor(score: Int, par: Int) -> Color {
-        if score < par {
-            return Color.green.opacity(0.2)
-        } else if score > par {
-            return Color.red.opacity(0.2)
-        }
-        return Color.clear
     }
 }

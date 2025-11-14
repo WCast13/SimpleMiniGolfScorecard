@@ -21,7 +21,7 @@ struct GameResultsView: View {
                             Text(course.name)
                                 .font(.title2)
                                 .fontWeight(.bold)
-                            Text(formatDate(game.date))
+                            Text(DateFormatterHelper.formatGameDate(game.date))
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -64,13 +64,6 @@ struct GameResultsView: View {
                 }
             }
         }
-    }
-
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
     }
 }
 
@@ -159,33 +152,17 @@ struct PlayerResultCard: View {
 }
 
 #Preview("Detailed Scorecard") {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Game.self, Course.self, Player.self, Score.self, configurations: config)
+    let container = PreviewHelper.createPreviewContainer()
+    let (game, players, course) = PreviewHelper.createSampleGame(
+        in: container,
+        courseName: "Popstroke Mini Golf",
+        numberOfHoles: 18,
+        playerCount: 3
+    )
 
-    let course = Course(name: "Popstroke Mini Golf", numberOfHoles: 18)
-    let player1 = Player(name: "Alice", preferredBallColor: .red)
-    let player2 = Player(name: "Bob", preferredBallColor: .blue)
-    let player3 = Player(name: "Charlie", preferredBallColor: .green)
-    let game = Game(course: course, players: [player1, player2, player3])
-
-    // Create varied scores for all holes
-    for hole in 1...18 {
-        let score1 = Score(holeNumber: hole, strokes: Int.random(in: 2...5), game: game, player: player1)
-        let score2 = Score(holeNumber: hole, strokes: Int.random(in: 2...6), game: game, player: player2)
-        let score3 = Score(holeNumber: hole, strokes: Int.random(in: 2...5), game: game, player: player3)
-        container.mainContext.insert(score1)
-        container.mainContext.insert(score2)
-        container.mainContext.insert(score3)
-    }
-
+    PreviewHelper.createRandomScores(for: game, players: players, numberOfHoles: 18, in: container)
     game.isComplete = true
 
-    container.mainContext.insert(course)
-    container.mainContext.insert(player1)
-    container.mainContext.insert(player2)
-    container.mainContext.insert(player3)
-    container.mainContext.insert(game)
-
-    return DetailedScorecard(game: game, course: course, players: [player1, player2, player3])
+    return DetailedScorecard(game: game, course: course, players: players)
         .modelContainer(container)
 }
