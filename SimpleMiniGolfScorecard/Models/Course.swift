@@ -4,7 +4,7 @@ import CoreLocation
 
 @Model
 final class Course {
-    @Attribute(.unique) var id: UUID = UUID()
+    var id: UUID = UUID()
     var name: String = ""
     var numberOfHoles: Int = 18
     var parPerHole: [Int] = Array(repeating: 3, count: 18)

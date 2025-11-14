@@ -3,9 +3,9 @@ import SwiftData
 
 @Model
 final class Score {
-    @Attribute(.unique) var id: UUID = UUID()
+    var id: UUID = UUID()
     var holeNumber: Int = 1
-    var strokes: Int = 0
+    var strokes: Int = 2
 
     var game: Game?
     var player: Player?

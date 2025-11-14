@@ -4,6 +4,7 @@ import SwiftData
 @Observable
 class PlayerFormViewModel {
     var name: String = ""
+    var initials: String = ""
     var selectedBallColor: BallColor?
 
     private let player: Player?
@@ -23,6 +24,7 @@ class PlayerFormViewModel {
 
         if let player = player {
             self.name = player.name
+            self.initials = player.initials
             self.selectedBallColor = player.ballColor
         }
     }
@@ -34,6 +36,7 @@ class PlayerFormViewModel {
         if let player = player {
             player.name = trimmedName
             player.ballColor = selectedBallColor
+            player.initials = initials
         } else {
             let newPlayer = Player(name: trimmedName, preferredBallColor: selectedBallColor)
             modelContext.insert(newPlayer)

@@ -3,7 +3,7 @@ import SwiftData
 
 @Model
 final class Game {
-    @Attribute(.unique) var id: UUID = UUID()
+    var id: UUID = UUID()
     var date: Date = Date()
     var isComplete: Bool = false
 

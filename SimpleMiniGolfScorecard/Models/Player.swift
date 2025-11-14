@@ -30,8 +30,9 @@ enum BallColor: String, Codable, CaseIterable {
 
 @Model
 final class Player {
-    @Attribute(.unique) var id: UUID = UUID()
+    var id: UUID = UUID()
     var name: String = ""
+    var initials: String = ""
     var createdAt: Date = Date()
     var preferredBallColor: String?
 
@@ -44,6 +45,7 @@ final class Player {
     init(name: String, preferredBallColor: BallColor? = nil) {
         self.id = UUID()
         self.name = name
+        self.initials = initials
         self.createdAt = Date()
         self.preferredBallColor = preferredBallColor?.rawValue
         self.games = []

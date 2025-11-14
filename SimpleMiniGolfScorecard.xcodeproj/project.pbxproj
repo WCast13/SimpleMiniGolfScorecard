@@ -10,9 +10,22 @@
 		E1CA46B42EC63C5A00D2B7FC /* SimpleMiniGolfScorecard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMiniGolfScorecard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E1CA47282EC7AAFE00D2B7FC /* Exceptions for "SimpleMiniGolfScorecard" folder in "SimpleMiniGolfScorecard" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E1CA46B32EC63C5A00D2B7FC /* SimpleMiniGolfScorecard */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E1CA46B62EC63C5A00D2B7FC /* SimpleMiniGolfScorecard */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E1CA47282EC7AAFE00D2B7FC /* Exceptions for "SimpleMiniGolfScorecard" folder in "SimpleMiniGolfScorecard" target */,
+			);
 			path = SimpleMiniGolfScorecard;
 			sourceTree = "<group>";
 		};
@@ -265,6 +278,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SimpleMiniGolfScorecard/Info.plist;
 				INFOPLIST_KEY_NSLocationUsageDescription = "Need Location to View Nearby Courses";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need location";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -322,6 +336,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SimpleMiniGolfScorecard/Info.plist;
 				INFOPLIST_KEY_NSLocationUsageDescription = "Need Location to View Nearby Courses";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need location";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;

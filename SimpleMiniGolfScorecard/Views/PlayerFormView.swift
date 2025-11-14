@@ -20,6 +20,10 @@ struct PlayerFormView: View {
                         get: { viewModel?.name ?? "" },
                         set: { viewModel?.name = $0 }
                     ))
+                    TextField("Player Initials", text: Binding(
+                        get: { viewModel?.initials ?? "" },
+                        set: { viewModel?.initials = $0 }
+                    ))
                 }
 
                 Section("Preferred Ball Color") {

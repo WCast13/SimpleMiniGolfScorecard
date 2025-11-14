@@ -46,7 +46,6 @@ struct ScorePickerView: View {
             .cornerRadius(12)
         }
         .padding(30)
-        .glassEffect()
     }
 }
 
