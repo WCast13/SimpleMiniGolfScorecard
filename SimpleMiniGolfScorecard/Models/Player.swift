@@ -30,13 +30,16 @@ enum BallColor: String, Codable, CaseIterable {
 
 @Model
 final class Player {
-    var id: UUID
-    var name: String
-    var createdAt: Date
+    @Attribute(.unique) var id: UUID = UUID()
+    var name: String = ""
+    var createdAt: Date = Date()
     var preferredBallColor: String?
 
     @Relationship(deleteRule: .cascade, inverse: \Game.players)
     var games: [Game]?
+
+    @Relationship(deleteRule: .nullify, inverse: \Score.player)
+    var scores: [Score]?
 
     init(name: String, preferredBallColor: BallColor? = nil) {
         self.id = UUID()
@@ -44,6 +47,7 @@ final class Player {
         self.createdAt = Date()
         self.preferredBallColor = preferredBallColor?.rawValue
         self.games = []
+        self.scores = []
     }
 
     var ballColor: BallColor? {

@@ -3,9 +3,9 @@ import SwiftData
 
 @Model
 final class Game {
-    var id: UUID
-    var date: Date
-    var isComplete: Bool
+    @Attribute(.unique) var id: UUID = UUID()
+    var date: Date = Date()
+    var isComplete: Bool = false
 
     var course: Course?
     var players: [Player]?

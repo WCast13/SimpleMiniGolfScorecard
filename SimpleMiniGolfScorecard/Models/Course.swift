@@ -4,11 +4,11 @@ import CoreLocation
 
 @Model
 final class Course {
-    var id: UUID
-    var name: String
-    var numberOfHoles: Int
-    var parPerHole: [Int]
-    var createdAt: Date
+    @Attribute(.unique) var id: UUID = UUID()
+    var name: String = ""
+    var numberOfHoles: Int = 18
+    var parPerHole: [Int] = Array(repeating: 3, count: 18)
+    var createdAt: Date = Date()
     var locationName: String?
     var latitude: Double?
     var longitude: Double?
