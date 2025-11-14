@@ -5,7 +5,7 @@ import SwiftData
 final class Score {
     var id: UUID = UUID()
     var holeNumber: Int = 1
-    var strokes: Int = 2
+    var strokes: Int = 0
 
     var game: Game?
     var player: Player?

@@ -44,7 +44,7 @@ struct VerticalScorecardTable: View {
 
                         ForEach(players) { player in
                             VStack(spacing: 2) {
-                                Text(player.name)
+                                Text(player.initials.isEmpty ? player.name : player.initials)
                                     .font(.caption)
                                     .fontWeight(.semibold)
                                     .lineLimit(1)

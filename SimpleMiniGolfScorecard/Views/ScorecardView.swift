@@ -139,7 +139,7 @@ struct PlayerScoreCard: View {
                             )
                             .frame(width: 16, height: 16)
                     }
-                    Text(player.initials.isEmpty ? player.name : player.initials)
+                    Text(player.name)
                         .font(.headline)
                 }
                 Text("Total: \(game.totalScore(for: player))")
@@ -149,11 +149,11 @@ struct PlayerScoreCard: View {
             
             Spacer()
             
-            Button("\(strokes)") {
+            Button("\(strokes == 0 ? "-" : "\(strokes)")") {
                 showingScorePicker = true
             }
             .font(.system(size: 36, weight: .bold))
-            .frame(width: 100, height: 80)
+            .frame(width: 75, height: 60)
             .background(Color(.secondarySystemBackground).cornerRadius(12))
             .buttonStyle(.plain)
         }
@@ -186,11 +186,11 @@ struct PlayerScoreCard: View {
         if let existingScore = game.getScore(for: player, hole: hole) {
             strokes = existingScore.strokes
         } else {
-            strokes = 2
+            strokes = 0
         }
     }
     
-    private func updateScore() {
+    func updateScore() {
         if let existingScore = game.getScore(for: player, hole: hole) {
             existingScore.strokes = strokes
         } else {
