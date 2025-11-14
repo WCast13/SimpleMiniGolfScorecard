@@ -17,7 +17,13 @@ struct SimpleMiniGolfScorecardApp: App {
             Game.self,
             Score.self
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        // Enable CloudKit sync with automatic cloud database
+        let modelConfiguration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false,
+            cloudKitDatabase: .automatic
+        )
 
         do {
             let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
