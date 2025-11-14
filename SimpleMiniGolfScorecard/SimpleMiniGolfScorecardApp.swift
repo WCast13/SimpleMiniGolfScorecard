@@ -34,8 +34,33 @@ struct SimpleMiniGolfScorecardApp: App {
             }
 
             return container
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+        } catch let error as NSError {
+            // If CloudKit initialization fails, provide more context
+            print("❌ ModelContainer Error: \(error)")
+            print("Error Domain: \(error.domain)")
+            print("Error Code: \(error.code)")
+            print("Error Info: \(error.userInfo)")
+
+            // Try to create container without CloudKit as fallback
+            do {
+                print("⚠️ Attempting to create container without CloudKit...")
+                let fallbackConfig = ModelConfiguration(
+                    schema: schema,
+                    isStoredInMemoryOnly: false,
+                    cloudKitDatabase: .none
+                )
+                let container = try ModelContainer(for: schema, configurations: [fallbackConfig])
+                print("✅ Successfully created container without CloudKit")
+
+                // Seed data if needed
+                if SeedData.shouldSeedData(modelContext: container.mainContext) {
+                    SeedData.createPopstrokeCourses(modelContext: container.mainContext)
+                }
+
+                return container
+            } catch {
+                fatalError("Could not create ModelContainer even without CloudKit: \(error)")
+            }
         }
     }()
 
