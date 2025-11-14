@@ -240,7 +240,7 @@ struct PlayerScoreCard: View {
     container.mainContext.insert(game)
 
     return NavigationStack {
-        ScorecardView(game: game)
+        ScorecardTableView(game: game)
             .modelContainer(container)
     }
 }

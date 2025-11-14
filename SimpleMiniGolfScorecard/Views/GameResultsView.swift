@@ -129,87 +129,7 @@ struct PlayerResultCard: View {
     }
 }
 
-struct DetailedScorecard: View {
-    let game: Game
-    let course: Course
-    let players: [Player]
 
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: true) {
-            VStack(alignment: .leading, spacing: 0) {
-                HStack(spacing: 0) {
-                    Text("Hole")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .frame(width: 60)
-                        .padding(.vertical, 8)
-
-                    ForEach(1...course.numberOfHoles, id: \.self) { hole in
-                        VStack(spacing: 4) {
-                            Text("\(hole)")
-                                .font(.caption)
-                                .fontWeight(.semibold)
-                            Text("(\(course.parPerHole[hole - 1]))")
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
-                        }
-                        .frame(width: 50)
-                        .padding(.vertical, 4)
-                    }
-
-                    Text("Total")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .frame(width: 60)
-                        .padding(.vertical, 8)
-                }
-                .background(Color(.secondarySystemBackground))
-
-                ForEach(players) { player in
-                    HStack(spacing: 0) {
-                        Text(player.name)
-                            .font(.caption)
-                            .lineLimit(1)
-                            .frame(width: 60)
-                            .padding(.vertical, 8)
-
-                        ForEach(1...course.numberOfHoles, id: \.self) { hole in
-                            if let score = game.getScore(for: player, hole: hole) {
-                                Text("\(score.strokes)")
-                                    .font(.caption)
-                                    .frame(width: 50)
-                                    .padding(.vertical, 8)
-                                    .background(scoreColor(score: score.strokes, par: course.parPerHole[hole - 1]))
-                            } else {
-                                Text("-")
-                                    .font(.caption)
-                                    .frame(width: 50)
-                                    .padding(.vertical, 8)
-                            }
-                        }
-
-                        Text("\(game.totalScore(for: player))")
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .frame(width: 60)
-                            .padding(.vertical, 8)
-                    }
-                    Divider()
-                }
-            }
-        }
-        .padding(.horizontal)
-    }
-
-    private func scoreColor(score: Int, par: Int) -> Color {
-        if score < par {
-            return Color.green.opacity(0.2)
-        } else if score > par {
-            return Color.red.opacity(0.2)
-        }
-        return Color.clear
-    }
-}
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
@@ -235,5 +155,37 @@ struct DetailedScorecard: View {
     container.mainContext.insert(game)
 
     return GameResultsView(game: game)
+        .modelContainer(container)
+}
+
+#Preview("Detailed Scorecard") {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Game.self, Course.self, Player.self, Score.self, configurations: config)
+
+    let course = Course(name: "Popstroke Mini Golf", numberOfHoles: 18)
+    let player1 = Player(name: "Alice", preferredBallColor: .red)
+    let player2 = Player(name: "Bob", preferredBallColor: .blue)
+    let player3 = Player(name: "Charlie", preferredBallColor: .green)
+    let game = Game(course: course, players: [player1, player2, player3])
+
+    // Create varied scores for all holes
+    for hole in 1...18 {
+        let score1 = Score(holeNumber: hole, strokes: Int.random(in: 2...5), game: game, player: player1)
+        let score2 = Score(holeNumber: hole, strokes: Int.random(in: 2...6), game: game, player: player2)
+        let score3 = Score(holeNumber: hole, strokes: Int.random(in: 2...5), game: game, player: player3)
+        container.mainContext.insert(score1)
+        container.mainContext.insert(score2)
+        container.mainContext.insert(score3)
+    }
+
+    game.isComplete = true
+
+    container.mainContext.insert(course)
+    container.mainContext.insert(player1)
+    container.mainContext.insert(player2)
+    container.mainContext.insert(player3)
+    container.mainContext.insert(game)
+
+    return DetailedScorecard(game: game, course: course, players: [player1, player2, player3])
         .modelContainer(container)
 }
