@@ -7,13 +7,29 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		E1CA46B42EC63C5A00D2B7FC /* SimpleMiniGolfScorecard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMiniGolfScorecard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E145DECA2EC7E2F900F688DD /* SimpleMiniGolfScorecard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SimpleMiniGolfScorecard.entitlements; sourceTree = "<group>"; };
+		E145DEE82EC7E3C200F688DD /* SimpleMiniGolfScorecard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMiniGolfScorecard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		E1CA46B62EC63C5A00D2B7FC /* SimpleMiniGolfScorecard */ = {
+		E145DEA12EC7E2F900F688DD /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SimpleMiniGolfScorecard;
+			path = App;
+			sourceTree = "<group>";
+		};
+		E145DEBE2EC7E2F900F688DD /* CoreAppMVVM */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CoreAppMVVM;
+			sourceTree = "<group>";
+		};
+		E145DEC62EC7E2F900F688DD /* Helpers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E145DEC92EC7E2F900F688DD /* Resources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,17 +48,13 @@
 		E1CA46AB2EC63C5A00D2B7FC = {
 			isa = PBXGroup;
 			children = (
-				E1CA46B62EC63C5A00D2B7FC /* SimpleMiniGolfScorecard */,
-				E1CA46B52EC63C5A00D2B7FC /* Products */,
+				E145DEA12EC7E2F900F688DD /* App */,
+				E145DEBE2EC7E2F900F688DD /* CoreAppMVVM */,
+				E145DEC62EC7E2F900F688DD /* Helpers */,
+				E145DEC92EC7E2F900F688DD /* Resources */,
+				E145DECA2EC7E2F900F688DD /* SimpleMiniGolfScorecard.entitlements */,
+				E145DEE82EC7E3C200F688DD /* SimpleMiniGolfScorecard.app */,
 			);
-			sourceTree = "<group>";
-		};
-		E1CA46B52EC63C5A00D2B7FC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E1CA46B42EC63C5A00D2B7FC /* SimpleMiniGolfScorecard.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -61,13 +73,16 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				E1CA46B62EC63C5A00D2B7FC /* SimpleMiniGolfScorecard */,
+				E145DEA12EC7E2F900F688DD /* App */,
+				E145DEBE2EC7E2F900F688DD /* CoreAppMVVM */,
+				E145DEC62EC7E2F900F688DD /* Helpers */,
+				E145DEC92EC7E2F900F688DD /* Resources */,
 			);
 			name = SimpleMiniGolfScorecard;
 			packageProductDependencies = (
 			);
 			productName = SimpleMiniGolfScorecard;
-			productReference = E1CA46B42EC63C5A00D2B7FC /* SimpleMiniGolfScorecard.app */;
+			productReference = E145DEE82EC7E3C200F688DD /* SimpleMiniGolfScorecard.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -95,7 +110,7 @@
 			mainGroup = E1CA46AB2EC63C5A00D2B7FC;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = E1CA46B52EC63C5A00D2B7FC /* Products */;
+			productRefGroup = E1CA46AB2EC63C5A00D2B7FC;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -246,7 +261,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SimpleMiniGolfScorecard/SimpleMiniGolfScorecard.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SimpleMiniGolfScorecard.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4QM78MLWEF;
@@ -284,6 +300,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wctech.SimpleMiniGolfScorecard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -303,7 +320,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SimpleMiniGolfScorecard/SimpleMiniGolfScorecard.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SimpleMiniGolfScorecard.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4QM78MLWEF;
@@ -341,6 +359,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wctech.SimpleMiniGolfScorecard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
