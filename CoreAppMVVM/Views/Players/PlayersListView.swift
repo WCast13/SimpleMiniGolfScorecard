@@ -5,6 +5,7 @@ struct PlayersListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Player.name) private var players: [Player]
     @State private var showingAddPlayer = false
+    @State private var playerToEdit: Player?
 
     var body: some View {
         NavigationStack {
@@ -26,6 +27,18 @@ struct PlayersListView: View {
                             }
                         }
                     }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        playerToEdit = player
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            playerToEdit = player
+                        } label: {
+                            Label("Edit", systemImage: "pencil")
+                        }
+                        .tint(.blue)
+                    }
                 }
                 .onDelete(perform: deletePlayers)
             }
@@ -39,6 +52,9 @@ struct PlayersListView: View {
             }
             .sheet(isPresented: $showingAddPlayer) {
                 PlayerFormView()
+            }
+            .sheet(item: $playerToEdit) { player in
+                PlayerFormView(player: player)
             }
             .overlay {
                 if players.isEmpty {

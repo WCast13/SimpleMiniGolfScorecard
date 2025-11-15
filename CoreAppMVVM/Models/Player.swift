@@ -42,7 +42,7 @@ final class Player {
     @Relationship(deleteRule: .nullify, inverse: \Score.player)
     var scores: [Score]?
 
-    init(name: String, preferredBallColor: BallColor? = nil) {
+    init(name: String, initials: String = "", preferredBallColor: BallColor? = nil) {
         self.id = UUID()
         self.name = name
         self.initials = initials

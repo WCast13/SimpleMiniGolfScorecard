@@ -38,7 +38,7 @@ class PlayerFormViewModel {
             player.ballColor = selectedBallColor
             player.initials = initials
         } else {
-            let newPlayer = Player(name: trimmedName, preferredBallColor: selectedBallColor)
+            let newPlayer = Player(name: trimmedName, initials: initials, preferredBallColor: selectedBallColor)
             modelContext.insert(newPlayer)
         }
     }
