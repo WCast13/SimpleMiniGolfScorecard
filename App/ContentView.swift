@@ -26,7 +26,6 @@ struct ContentView: View {
                     Label("Players", systemImage: "person.fill")
                 }
         }
-        .glassEffect()
     }
 }
 
