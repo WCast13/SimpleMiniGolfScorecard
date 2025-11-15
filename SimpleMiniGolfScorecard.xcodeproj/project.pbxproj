@@ -8,7 +8,7 @@
 
 /* Begin PBXFileReference section */
 		E145DECA2EC7E2F900F688DD /* SimpleMiniGolfScorecard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SimpleMiniGolfScorecard.entitlements; sourceTree = "<group>"; };
-		E145DEE82EC7E3C200F688DD /* SimpleMiniGolfScorecard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMiniGolfScorecard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1790BFD2EC7E5CC00373EE6 /* SimpleMiniGolfScorecard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMiniGolfScorecard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -53,7 +53,7 @@
 				E145DEC62EC7E2F900F688DD /* Helpers */,
 				E145DEC92EC7E2F900F688DD /* Resources */,
 				E145DECA2EC7E2F900F688DD /* SimpleMiniGolfScorecard.entitlements */,
-				E145DEE82EC7E3C200F688DD /* SimpleMiniGolfScorecard.app */,
+				E1790BFD2EC7E5CC00373EE6 /* SimpleMiniGolfScorecard.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -82,7 +82,7 @@
 			packageProductDependencies = (
 			);
 			productName = SimpleMiniGolfScorecard;
-			productReference = E145DEE82EC7E3C200F688DD /* SimpleMiniGolfScorecard.app */;
+			productReference = E1790BFD2EC7E5CC00373EE6 /* SimpleMiniGolfScorecard.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -280,9 +280,10 @@
 				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
-				INFOPLIST_FILE = Resources/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationUsageDescription = "Need Location to View Nearby Courses";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need location";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -339,9 +340,10 @@
 				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
-				INFOPLIST_FILE = Resources/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationUsageDescription = "Need Location to View Nearby Courses";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need location";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
