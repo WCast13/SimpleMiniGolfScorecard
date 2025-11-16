@@ -5,6 +5,24 @@ struct GameResultsView: View {
     @Environment(\.dismiss) private var dismiss
     let game: Game
 
+    var body: some View {
+        Group {
+            switch game.gameMode {
+            case .strokePlay:
+                StrokePlayResultsView(game: game)
+            case .matchPlay:
+                MatchPlayResultsView(game: game)
+            case .teamMatchPlay:
+                TeamMatchPlayResultsView(game: game)
+            }
+        }
+    }
+}
+
+struct StrokePlayResultsView: View {
+    @Environment(\.dismiss) private var dismiss
+    let game: Game
+
     var sortedPlayers: [(Player, Int)] {
         guard let players = game.players else { return [] }
         return players.map { player in

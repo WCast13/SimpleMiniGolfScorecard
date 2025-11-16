@@ -19,7 +19,12 @@ struct ScorecardView: View {
                             showingResults = true
                         }, par: course.parPerHole[currentHole - 1]
                     )
-                    
+
+                    // Match Play status banner
+                    if game.gameMode == .matchPlay || game.gameMode == .teamMatchPlay {
+                        MatchStatusBanner(game: game, currentHole: currentHole)
+                    }
+
                     ScrollView {
                         VStack(spacing: 20) {
                             VStack(spacing: 12) {
@@ -196,6 +201,71 @@ struct PlayerScoreCard: View {
         } else {
             let newScore = Score(holeNumber: hole, strokes: strokes, game: game, player: player)
             modelContext.insert(newScore)
+        }
+    }
+}
+
+struct MatchStatusBanner: View {
+    let game: Game
+    let currentHole: Int
+
+    var statusText: String {
+        if game.gameMode == .matchPlay {
+            let holeResults = (1..<currentHole).compactMap { hole -> HoleResult? in
+                guard let players = game.players else { return nil }
+                let winner = GameModeService.getHoleWinner(game: game, hole: hole, players: players)
+                var scores: [Player: Int] = [:]
+                for player in players {
+                    if let score = game.getScore(for: player, hole: hole) {
+                        scores[player] = score.strokes
+                    }
+                }
+                return HoleResult(holeNumber: hole, winner: winner, scores: scores)
+            }
+            return GameModeService.getMatchStatus(game: game, holeResults: holeResults)
+        } else if game.gameMode == .teamMatchPlay {
+            let holeResults = (1..<currentHole).compactMap { hole -> TeamHoleResult? in
+                guard let teamFormat = game.teamFormat else { return nil }
+                let teamAPlayers = game.getTeamPlayers(team: "A")
+                let teamBPlayers = game.getTeamPlayers(team: "B")
+
+                let teamAScore = GameModeService.calculateTeamScore(players: teamAPlayers, game: game, hole: hole, format: teamFormat)
+                let teamBScore = GameModeService.calculateTeamScore(players: teamBPlayers, game: game, hole: hole, format: teamFormat)
+
+                var winningTeam: String?
+                if teamAScore < teamBScore {
+                    winningTeam = "A"
+                } else if teamBScore < teamAScore {
+                    winningTeam = "B"
+                }
+
+                return TeamHoleResult(
+                    holeNumber: hole,
+                    winningTeam: winningTeam,
+                    teamAScore: teamAScore,
+                    teamBScore: teamBScore,
+                    teamAPlayers: teamAPlayers,
+                    teamBPlayers: teamBPlayers
+                )
+            }
+            return GameModeService.getTeamMatchStatus(holeResults: holeResults, teamAPlayers: game.getTeamPlayers(team: "A"), teamBPlayers: game.getTeamPlayers(team: "B"))
+        }
+        return ""
+    }
+
+    var body: some View {
+        if currentHole > 1 {
+            HStack {
+                Image(systemName: game.gameMode == .teamMatchPlay ? "person.3.fill" : "person.2.fill")
+                    .foregroundStyle(.blue)
+                Text(statusText)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity)
+            .background(Color.blue.opacity(0.1))
         }
     }
 }

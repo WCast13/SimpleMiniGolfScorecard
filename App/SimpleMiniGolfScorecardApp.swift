@@ -52,11 +52,6 @@ struct SimpleMiniGolfScorecardApp: App {
                 let container = try ModelContainer(for: schema, configurations: [fallbackConfig])
                 print("✅ Successfully created container without CloudKit")
 
-                // Seed data if needed
-                if SeedData.shouldSeedData(modelContext: container.mainContext) {
-                    SeedData.createPopstrokeCourses(modelContext: container.mainContext)
-                }
-
                 return container
             } catch {
                 fatalError("Could not create ModelContainer even without CloudKit: \(error)")
