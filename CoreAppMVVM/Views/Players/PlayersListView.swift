@@ -11,25 +11,23 @@ struct PlayersListView: View {
         NavigationStack {
             List {
                 ForEach(players) { player in
-                    HStack {
-                        if let ballColor = player.ballColor {
-                            Circle()
-                                .fill(ballColor.color)
-                                .frame(width: 24, height: 24)
-                        }
-                        VStack(alignment: .leading) {
-                            Text(player.name)
-                                .font(.headline)
+                    NavigationLink(destination: PlayerStatsView(player: player)) {
+                        HStack {
                             if let ballColor = player.ballColor {
-                                Text("Ball: \(ballColor.rawValue)")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                Circle()
+                                    .fill(ballColor.color)
+                                    .frame(width: 24, height: 24)
+                            }
+                            VStack(alignment: .leading) {
+                                Text(player.name)
+                                    .font(.headline)
+                                if let ballColor = player.ballColor {
+                                    Text("Ball: \(ballColor.rawValue)")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                         }
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        playerToEdit = player
                     }
                     .swipeActions(edge: .leading) {
                         Button {
