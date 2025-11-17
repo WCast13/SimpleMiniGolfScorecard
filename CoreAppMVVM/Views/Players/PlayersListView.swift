@@ -12,21 +12,34 @@ struct PlayersListView: View {
             List {
                 ForEach(players) { player in
                     NavigationLink(destination: PlayerStatsView(player: player)) {
+                        
+//                        VStack(alignment: .leading, spacing: 2) {
+//                            Text(player.name)
+//                                .font(.headline)
+//                            
+//                            Text("\(player.games?.count ?? 0) games")
+//                                .font(.title3)
+//                                .fontWeight(.semibold)
+//                                .foregroundStyle(.primary)
+//                        }
+                        
+                        
+                        
                         HStack {
-                            if let ballColor = player.ballColor {
-                                Circle()
-                                    .fill(ballColor.color)
-                                    .frame(width: 24, height: 24)
+                            Text(player.name)
+                                .font(.headline)
+                                .bold()
+                            
+                            Spacer()
+                            
+                            VStack(alignment: .center, spacing: 2) {
+                                Text("Games Played")
+                                    .font(.caption)
+                                Text("\(player.games?.count ?? 0)")
+                                    .font(.callout)
+                                    .fontWeight(.semibold)
                             }
-                            VStack(alignment: .leading) {
-                                Text(player.name)
-                                    .font(.headline)
-                                if let ballColor = player.ballColor {
-                                    Text("Ball: \(ballColor.rawValue)")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
+                            
                         }
                     }
                     .swipeActions(edge: .leading) {

@@ -33,6 +33,8 @@ final class Player {
     var id: UUID = UUID()
     var name: String = ""
     var initials: String = ""
+    var phoneNumber: String?
+    var email: String?
     var createdAt: Date = Date()
     var preferredBallColor: String?
 
@@ -42,10 +44,12 @@ final class Player {
     @Relationship(deleteRule: .nullify, inverse: \Score.player)
     var scores: [Score]?
 
-    init(name: String, initials: String = "", preferredBallColor: BallColor? = nil) {
+    init(name: String, initials: String = "", phoneNumber: String? = nil, email: String? = nil, preferredBallColor: BallColor? = nil) {
         self.id = UUID()
         self.name = name
         self.initials = initials
+        self.phoneNumber = phoneNumber
+        self.email = email
         self.createdAt = Date()
         self.preferredBallColor = preferredBallColor?.rawValue
         self.games = []

@@ -7,12 +7,15 @@ struct NewGameView: View {
     @Query(sort: \Course.name) private var courses: [Course]
     @Query(sort: \Player.name) private var players: [Player]
 
+    var onGameCreated: ((Game) -> Void)?
+
     @State private var selectedCourse: Course?
     @State private var selectedPlayers: Set<Player.ID> = []
     @State private var selectedGameMode: GameMode = .strokePlay
     @State private var selectedTeamFormat: TeamFormat = .bestBall
     @State private var teamAssignmentMethod: TeamAssignment = .manual
     @State private var teamAssignments: [Player.ID: String] = [:]
+    @State private var ballColorAssignments: [Player.ID: BallColor] = [:]
     @State private var showingError = false
     @State private var errorMessage = ""
 
@@ -22,8 +25,7 @@ struct NewGameView: View {
                 Section("Game Mode") {
                     Picker("Mode", selection: $selectedGameMode) {
                         ForEach(GameMode.allCases, id: \.self) { mode in
-                            Label(mode.description, systemImage: mode.systemImage)
-                                .tag(mode)
+                            Text(mode.description)
                         }
                     }
                     .onChange(of: selectedGameMode) { _, newMode in
@@ -53,19 +55,52 @@ struct NewGameView: View {
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(players) { player in
-                            Toggle(player.name, isOn: Binding(
-                                get: { selectedPlayers.contains(player.id) },
-                                set: { isSelected in
-                                    if isSelected {
-                                        selectedPlayers.insert(player.id)
-                                    } else {
-                                        selectedPlayers.remove(player.id)
+                            VStack(alignment: .leading, spacing: 8) {
+                                Toggle(player.name, isOn: Binding(
+                                    get: { selectedPlayers.contains(player.id) },
+                                    set: { isSelected in
+                                        if isSelected {
+                                            selectedPlayers.insert(player.id)
+                                            // Initialize ball color to preferred color
+                                            if let preferredColor = player.ballColor {
+                                                ballColorAssignments[player.id] = preferredColor
+                                            }
+                                        } else {
+                                            selectedPlayers.remove(player.id)
+                                            ballColorAssignments.removeValue(forKey: player.id)
+                                        }
+                                        if selectedGameMode == .teamMatchPlay {
+                                            initializeTeamAssignments()
+                                        }
                                     }
-                                    if selectedGameMode == .teamMatchPlay {
-                                        initializeTeamAssignments()
+                                ))
+
+                                // Show ball color picker if player is selected
+                                if selectedPlayers.contains(player.id) {
+                                    HStack {
+                                        Text("Ball Color")
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                        Spacer()
+                                        Picker("", selection: Binding(
+                                            get: { ballColorAssignments[player.id] ?? player.ballColor ?? .red },
+                                            set: { ballColorAssignments[player.id] = $0 }
+                                        )) {
+                                            ForEach(BallColor.allCases, id: \.self) { color in
+                                                HStack {
+                                                    Circle()
+                                                        .fill(color.color)
+                                                        .frame(width: 16, height: 16)
+                                                    Text(color.rawValue)
+                                                }
+                                                .tag(color)
+                                            }
+                                        }
+                                        .pickerStyle(.menu)
                                     }
+                                    .padding(.leading, 20)
                                 }
-                            ))
+                            }
                         }
                     }
                 }
@@ -203,7 +238,7 @@ struct NewGameView: View {
         )
 
         modelContext.insert(newGame)
-        dismiss()
+        onGameCreated?(newGame)
     }
 
     private func showError(_ message: String) {

@@ -5,6 +5,7 @@ struct GamesListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Game.date, order: .reverse) private var games: [Game]
     @State private var showingNewGame = false
+    @State private var gameToNavigateTo: Game?
 
     var body: some View {
         NavigationStack {
@@ -31,7 +32,13 @@ struct GamesListView: View {
                 }
             }
             .sheet(isPresented: $showingNewGame) {
-                NewGameView()
+                NewGameView(onGameCreated: { game in
+                    showingNewGame = false
+                    gameToNavigateTo = game
+                })
+            }
+            .navigationDestination(item: $gameToNavigateTo) { game in
+                ScorecardView(game: game)
             }
             .overlay {
                 if games.isEmpty {

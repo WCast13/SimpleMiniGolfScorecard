@@ -27,12 +27,7 @@ struct SimpleMiniGolfScorecardApp: App {
 
         do {
             let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
-
-            // Seed Popstroke courses on first launch
-            if SeedData.shouldSeedData(modelContext: container.mainContext) {
-                SeedData.createPopstrokeCourses(modelContext: container.mainContext)
-            }
-
+            
             return container
         } catch let error as NSError {
             // If CloudKit initialization fails, provide more context
