@@ -45,7 +45,8 @@ class GameModeService {
         }
 
         var holeResults: [HoleResult] = []
-
+        var finalStatus: String = ""
+        
         // Calculate result for each hole
         for hole in 1...course.numberOfHoles {
             let holeWinner = getHoleWinner(game: game, hole: hole, players: players)
@@ -62,6 +63,7 @@ class GameModeService {
 
         // Calculate match status
         let status = getMatchStatus(game: game, holeResults: holeResults)
+        if status.contains("Win") { finalStatus = status }
 
         // Determine overall winner (most holes won)
         var holeWins: [Player: Int] = [:]
@@ -73,7 +75,7 @@ class GameModeService {
 
         let winner = holeWins.max(by: { $0.value < $1.value })?.key
 
-        return MatchPlayResult(holeResults: holeResults, finalStatus: status, winner: winner)
+        return MatchPlayResult(holeResults: holeResults, finalStatus: finalStatus, winner: winner)
     }
 
     /// Determine the winner of a specific hole
@@ -101,6 +103,7 @@ class GameModeService {
             return getMultiPlayerMatchStatus(holeResults: holeResults)
         }
 
+        var finalResult = ""
         // Two-player match play status
         let player1 = players[0]
         let player2 = players[1]
@@ -123,13 +126,15 @@ class GameModeService {
             return "All Square"
         } else if player1Wins > player2Wins {
             if difference > holesRemaining {
-                return "\(player1.name) wins \(difference)&\(holesRemaining)"
+                finalResult = "\(player1.name) wins \(difference)&\(holesRemaining)"
+                return finalResult
             } else {
                 return "\(player1.name) is \(difference) up"
             }
         } else {
             if difference > holesRemaining {
-                return "\(player2.name) wins \(difference)&\(holesRemaining)"
+                finalResult = "\(player2.name) wins \(difference)&\(holesRemaining)"
+                return finalResult
             } else {
                 return "\(player2.name) is \(difference) up"
             }
