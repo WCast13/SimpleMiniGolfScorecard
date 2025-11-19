@@ -56,6 +56,10 @@ struct MatchPlayScorecardTableView: View {
 
                     // Holes with match play status
                     ForEach(1...course.numberOfHoles, id: \.self) { hole in
+                        // Check if this hole is complete (both players have scores)
+                        let isHoleComplete = game.getScore(for: player1, hole: hole) != nil &&
+                                           game.getScore(for: player2, hole: hole) != nil
+
                         let holeResults = calculateHoleResultsUpTo(hole: hole, player1: player1, player2: player2)
                         let matchStatus = getMatchStatusForHole(holeResults: holeResults)
 
@@ -71,9 +75,9 @@ struct MatchPlayScorecardTableView: View {
                                 .frame(width: 40)
                                 .padding(.vertical, 8)
 
-                            // Player 1 status
+                            // Player 1 status - only show if hole is complete
                             Group {
-                                if matchStatus.leadingPlayer == player1.id && matchStatus.difference > 0 {
+                                if isHoleComplete && matchStatus.leadingPlayer == player1.id && matchStatus.difference > 0 {
                                     Text("\(matchStatus.difference) UP")
                                         .font(.caption)
                                         .fontWeight(.semibold)
@@ -85,9 +89,9 @@ struct MatchPlayScorecardTableView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 8)
 
-                            // AS Box (centered column)
+                            // AS Box (centered column) - only show if hole is complete
                             Group {
-                                if matchStatus.isAllSquare {
+                                if isHoleComplete && matchStatus.isAllSquare {
                                     Text("AS")
                                         .font(.caption)
                                         .fontWeight(.semibold)
@@ -99,9 +103,9 @@ struct MatchPlayScorecardTableView: View {
                             .frame(width: 60)
                             .padding(.vertical, 8)
 
-                            // Player 2 status
+                            // Player 2 status - only show if hole is complete
                             Group {
-                                if matchStatus.leadingPlayer == player2.id && matchStatus.difference > 0 {
+                                if isHoleComplete && matchStatus.leadingPlayer == player2.id && matchStatus.difference > 0 {
                                     Text("\(matchStatus.difference) UP")
                                         .font(.caption)
                                         .fontWeight(.semibold)
@@ -222,59 +226,14 @@ struct MatchStatus {
 
     // Create scores matching the example layout
     // Hole 1: Player 1 wins (1 UP)
-    let score1_1 = Score(holeNumber: 1, strokes: 2, game: game, player: player1)
-    let score1_2 = Score(holeNumber: 1, strokes: 3, game: game, player: player2)
+
 
     // Hole 2: Tie (AS)
     let score2_1 = Score(holeNumber: 2, strokes: 2, game: game, player: player1)
     let score2_2 = Score(holeNumber: 2, strokes: 2, game: game, player: player2)
 
-    // Hole 3: Player 2 wins (1 UP for Player 2)
-    let score3_1 = Score(holeNumber: 3, strokes: 3, game: game, player: player1)
-    let score3_2 = Score(holeNumber: 3, strokes: 2, game: game, player: player2)
-
-    // Hole 4: Tie (AS)
-    let score4_1 = Score(holeNumber: 4, strokes: 2, game: game, player: player1)
-    let score4_2 = Score(holeNumber: 4, strokes: 2, game: game, player: player2)
-
-    // Hole 5: Player 2 wins (1 UP for Player 2)
-    let score5_1 = Score(holeNumber: 5, strokes: 3, game: game, player: player1)
-    let score5_2 = Score(holeNumber: 5, strokes: 2, game: game, player: player2)
-
-    // Hole 6: Player 2 wins (2 UP for Player 2)
-    let score6_1 = Score(holeNumber: 6, strokes: 4, game: game, player: player1)
-    let score6_2 = Score(holeNumber: 6, strokes: 3, game: game, player: player2)
-
-    // Hole 7: Player 2 wins but they were already 2 up, so still shows current status (2 UP)
-    let score7_1 = Score(holeNumber: 7, strokes: 3, game: game, player: player1)
-    let score7_2 = Score(holeNumber: 7, strokes: 2, game: game, player: player2)
-
-    // Hole 8: Tie (AS) - but overall still 3 up
-    let score8_1 = Score(holeNumber: 8, strokes: 2, game: game, player: player1)
-    let score8_2 = Score(holeNumber: 8, strokes: 2, game: game, player: player2)
-
-    // Hole 9: Player 1 wins
-    let score9_1 = Score(holeNumber: 9, strokes: 2, game: game, player: player1)
-    let score9_2 = Score(holeNumber: 9, strokes: 3, game: game, player: player2)
-
-    container.mainContext.insert(score1_1)
-    container.mainContext.insert(score1_2)
     container.mainContext.insert(score2_1)
     container.mainContext.insert(score2_2)
-    container.mainContext.insert(score3_1)
-    container.mainContext.insert(score3_2)
-    container.mainContext.insert(score4_1)
-    container.mainContext.insert(score4_2)
-    container.mainContext.insert(score5_1)
-    container.mainContext.insert(score5_2)
-    container.mainContext.insert(score6_1)
-    container.mainContext.insert(score6_2)
-    container.mainContext.insert(score7_1)
-    container.mainContext.insert(score7_2)
-    container.mainContext.insert(score8_1)
-    container.mainContext.insert(score8_2)
-    container.mainContext.insert(score9_1)
-    container.mainContext.insert(score9_2)
 
     container.mainContext.insert(course)
     container.mainContext.insert(player1)

@@ -6,7 +6,7 @@ struct ScorecardView: View {
     let game: Game
     @State private var currentHole: Int = 1
     @State private var showingResults = false
-    @State private var showingScorecardTable = false
+    @State private var showingScorecardTable = true
     
     var body: some View {
         VStack(spacing: 0) {
@@ -40,7 +40,15 @@ struct ScorecardView: View {
                             .padding(.horizontal)
                             
                             if showingScorecardTable == true {
-                                ScorecardTableView(game: game)
+                                
+                                switch game.gameMode {
+                                case .matchPlay:
+                                    MatchPlayScorecardTableView(game: game)
+                                case .strokePlay:
+                                    ScorecardTableView(game: game)
+                                default:
+                                    ScorecardTableView(game: game)
+                                }
                             }
                         }
                         .padding(.vertical)
